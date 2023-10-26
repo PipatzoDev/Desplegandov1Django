@@ -1,0 +1,178 @@
+{% extends "base_generic.html" %}
+
+{% load static %}
+
+{%block content %}
+<!--**********************************
+    Content body start
+***********************************-->
+    <div class="page-titles">
+        <ol class="breadcrumb">
+            <li><h5 class="bc-title">Finanzas</h5></li>
+            <li class="breadcrumb-item"><a href="javascript:void(0)">
+                <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2.125 6.375L8.5 1.41667L14.875 6.375V14.1667C14.875 14.5424 14.7257 14.9027 14.4601 15.1684C14.1944 15.4341 13.8341 15.5833 13.4583 15.5833H3.54167C3.16594 15.5833 2.80561 15.4341 2.53993 15.1684C2.27426 14.9027 2.125 14.5424 2.125 14.1667V6.375Z" stroke="#2C2C2C" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M6.375 15.5833V8.5H10.625V15.5833" stroke="#2C2C2C" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Portal </a>
+            </li>
+            <li class="breadcrumb-item active"><a href="javascript:void(0)">Finanzas</a></li>
+        </ol>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-3 col-xxl-4">
+                <div class="card h-auto">
+                    <div class="card-header">
+                        <h4 class="heading mb-0">Agregar Transacción </h4>
+                    </div>
+                    <div class="card-body">
+                        <form class="finance-hr" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-group mb-3">
+                                <label> Monto<span class="text-danger">*</span>
+                                </label>
+                                <div class="input-group">
+                                <div class="input-group-text">$</div>
+                                {{ form.monto }}
+                                </div>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label class="text-secondary">Tipo de Transacción<span class="text-danger">*</span>
+                                </label>
+                                {{ form.tipo_transaccion }}
+                            </div>
+                            <div class="form-group mb-3">
+                                <label class="text-secondary">Fecha Transacción<span class="text-danger">*</span>
+                                </label>
+                                {{ form.fecha_transaccion }}
+                            </div>
+                            <div class="form-group mb-3">
+                                <label class="text-secondary">Descripción Transacción<span class="text-danger">*</span>
+                                </label>
+                                {{ form.descripcion }}
+                            </div>
+                            <div class="form-group mb-3">
+                                <label class="text-secondary">Empleado Relacionado<span class="text-danger">*</span>
+                                    {% if form.errors %}
+                                        <div class="errors">
+                                            <ul>
+                                                {% for field, errors in form.errors.items %}
+                                                    <li><span class="text-danger">{{ errors }}</span></li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    {% endif %}
+                                </label>
+                                {{ form.empleado_relacionado }}
+                            </div>
+                            <div class="form-group mb-3">
+                                <label class="text-secondary">Proveedor Relacionado<span class="text-danger">*</span>
+                                    {% if form.errors %}
+                                        <div class="errors">
+                                            <ul>
+                                                {% for field, errors in form.errors.items %}
+                                                    <li><span class="text-danger">{{ errors }}</span></li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    {% endif %}
+                                </label>
+                                {{ form.proveedor_relacionado }}
+                            </div>
+                            <div class="form-group mb-3">
+                                <label class="text-secondary">Otros datos Financieros<span class="text-danger">*</span>
+                                </label>
+                                {{ form.otros_datos_financieros }}
+                            </div>
+                            <div class="form-group mb-3">
+                                <label class="text-secondary">Subir Archivo<span class="text-danger"> ?</span>
+                                </label>
+                                {{form.archivo}}
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary mb-3">Agregar Transacción</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-9 col-xxl-8">
+                <div class="card">
+                    <div class="card-body p-0">
+                        <div class="table-responsive active-projects manage-client">
+                        <div class="tbl-caption">
+                            <h4 class="heading mb-0">Tabla de Finanzas</h4>
+                        </div>
+                            <table id="empoloyees-tbl1" class="table">
+                                <thead>
+                                    <tr>
+                                        <th>ID TRANSACCIÓN</th>
+                                        <th>TIPO TRANSACCIÓN</th>
+                                        <th>MONTO</th>
+                                        <th>FECHA TRANSACCIÓN</th>
+                                        <th>EMPLEADO</th>
+                                        <th>PROVEEDOR</th>
+                                        <th>DESCRIPCIÓN TRANSACCIÓN</th>
+                                        <th>OTROS DATOS</th>
+                                        <th>Archivos</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for x in trans%}
+                                    <tr>
+                                        <td>
+                                            {{x.id_transaccion}}
+                                        </td>
+                                        <td>
+                                            {{x.tipo_transaccion}}
+                                        </td>
+                                        <td>
+                                            {{x.monto}}
+                                        </td>
+                                        <td>
+                                            {{x.fecha_transaccion}}
+                                        </td>
+                                        <td>
+                                            {{x.empleado_relacionado}}
+                                        </td>
+                                        <td>
+                                            {{x.proveedor_relacionado}}
+                                        </td>
+                                        <td>
+                                            {{x.descripcion}}
+                                        </td>
+                                        <td>
+                                            {{x.otros_datos_financieros}}
+                                        </td>
+                                        {% if x.archivo %}
+                                            <td>
+                                                {% load static %}
+                                                <a href="{{x.archivo.url}}" download><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M12.1221 15.4361L12.1221 3.39508" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M15.0381 12.5084L12.1221 15.4364L9.20609 12.5084" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M16.7551 8.12799H17.6881C19.7231 8.12799 21.3721 9.77699 21.3721 11.813V16.697C21.3721 18.727 19.7271 20.372 17.6971 20.372L6.55707 20.372C4.52207 20.372 2.87207 18.722 2.87207 16.687V11.802C2.87207 9.77299 4.51807 8.12799 6.54707 8.12799L7.48907 8.12799" stroke="#130F26" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    </svg></a>
+                                            </td>
+                                            {% else %}
+                                            <td>  
+                                                
+                                            </td>
+                                            {% endif %}
+                                        
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                                
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<!--**********************************
+    Content body end
+***********************************-->
+{% endblock %}

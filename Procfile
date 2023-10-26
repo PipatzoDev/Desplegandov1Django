@@ -1,0 +1,1 @@
+web: gunicorn lh_web_interna.wsgi --log-file -
